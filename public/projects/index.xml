@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Projects on WynerTech Solutions</title>
+    <link>http://localhost:1313/projects/</link>
+    <description>Recent content in Projects on WynerTech Solutions</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 14 Dec 2025 02:28:31 -0500</lastBuildDate>
+    <atom:link href="http://localhost:1313/projects/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Case Study: Designing a Scalable Distributed Rate Limiter</title>
+      <link>http://localhost:1313/projects/rate-limiter-case-study/</link>
+      <pubDate>Sun, 14 Dec 2025 02:28:31 -0500</pubDate>
+      <guid>http://localhost:1313/projects/rate-limiter-case-study/</guid>
+      <description>How we architected a high-performance rate limiting system using Redis Sorted Sets.</description>
+    </item>
+  </channel>
+</rss>

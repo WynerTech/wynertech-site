@@ -1,0 +1,28 @@
+baseURL = 'https://wynertech.com/'
+languageCode = 'en-us'
+title = 'WynerTech Solutions'
+theme = 'wynertech'
+
+[params]
+  description = "Advanced technology consulting and R&D in software, AI, and distributed systems."
+  github = "https://github.com/wynertech"
+  email = "contact@wynertech.com"
+
+# Main Navigation Menu
+[[menu.main]]
+  identifier = "projects"
+  name = "System Designs"
+  url = "/projects/"
+  weight = 10
+
+[[menu.main]]
+  identifier = "about"
+  name = "About"
+  url = "/about/"
+  weight = 20
+
+[[menu.main]]
+  identifier = "contact"
+  name = "Contact"
+  url = "/contact/"
+  weight = 30
