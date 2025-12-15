@@ -6,8 +6,22 @@
     <description>Recent content on WynerTech Solutions</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 14 Dec 2025 02:28:31 -0500</lastBuildDate>
+    <lastBuildDate>Mon, 15 Dec 2025 01:34:44 -0500</lastBuildDate>
     <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Contact Us</title>
+      <link>http://localhost:1313/contact/</link>
+      <pubDate>Mon, 15 Dec 2025 01:34:44 -0500</pubDate>
+      <guid>http://localhost:1313/contact/</guid>
+      <description>Get in Touch Company email address: contact@wynertech.com&#xA;Response Time: We typically respond within 24-48 hours on business days.&#xA;Consulting Inquiries: Please include:&#xA;Project scope or technical challenge Timeline expectations Team size and current stack GitHub: github.com/WynerTech</description>
+    </item>
+    <item>
+      <title>About WynerTech Solutions</title>
+      <link>http://localhost:1313/about/</link>
+      <pubDate>Mon, 15 Dec 2025 01:34:33 -0500</pubDate>
+      <guid>http://localhost:1313/about/</guid>
+      <description>Advanced technology consulting and R&amp;amp;D in software, AI, and distributed systems.&#xA;Our Expertise System Architecture: Designing scalable, fault-tolerant distributed systems AI &amp;amp; Machine Learning: Implementing production-ready ML pipelines Performance Optimization: Identifying and resolving critical bottlenecks Technical Leadership: Building and mentoring high-performing engineering teams View our case studies to see our approach in action.</description>
+    </item>
     <item>
       <title>Case Study: Designing a Scalable Distributed Rate Limiter</title>
       <link>http://localhost:1313/projects/rate-limiter-case-study/</link>

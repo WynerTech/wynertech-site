@@ -1,0 +1,21 @@
+{{ define "main" }}
+<div class="container">
+    <h1>System Design Case Studies</h1>
+    <p class="subtitle">In-depth technical analyses of complex architectures and implementations.</p>
+    
+    <div class="project-list">
+        {{ range .Pages }}
+        <article class="project-card">
+            <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+            <div class="meta">
+                <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time>
+            </div>
+            <p>{{ .Summary }}</p>
+            <a href="{{ .RelPermalink }}" class="read-link">Read Case Study →</a>
+        </article>
+        {{ else }}
+        <p>No case studies published yet. Check back soon!</p>
+        {{ end }}
+    </div>
+</div>
+{{ end }}
