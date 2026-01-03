@@ -28,13 +28,140 @@
          
         .hero { text-align: center; padding: 4rem 0; }
         .hero h2 { font-size: 2.5rem; margin-bottom: 1rem; }
+        
+         
+        article table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 2rem 0;
+            font-size: 0.95em;
+        }
+        article table th {
+            border: 1px solid #4a5568;
+            background-color: #f7fafc;
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+        article table td {
+            border: 1px solid #e2e8f0;
+            padding: 10px 15px;
+        }
+        article table tr:hover {
+            background-color: #f1f5f9;
+        }
+
+         
+        .architecture-figure {
+          text-align: center;
+          margin: 2rem auto;  
+          max-width: 1000px;  
+        }
+
+         
+        .architecture-figure img {
+          display: block;  
+          margin-left: auto;
+          margin-right: auto;
+          max-width: 100%;  
+          height: auto;
+          border: 1px solid #e2e8f0;  
+          border-radius: 8px;
+        }
+
+         
+        .architecture-figure figcaption {
+          text-align: left;  
+          margin-top: 0.75rem;
+          font-size: 0.95em;
+          color: #666;  
+          font-style: italic;
+          line-height: 1.5;
+          max-width: 800px;  
+          margin-left: auto;
+          margin-right: auto;  
+        }
+
+         
+        ol.references {
+            list-style: none;
+            padding-left: 0;
+            counter-reset: ref-counter;
+        }
+        ol.references li {
+            margin-bottom: 1em;
+            padding-left: 3.5em;
+            text-indent: -3.5em;
+            counter-increment: ref-counter;
+            position: relative;
+        }
+        ol.references li::before {
+            content: "[" counter(ref-counter) "] ";
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+        ol.references li a[href^="#backref"] {
+            font-size: 0.85em;
+            margin-left: 0.5em;
+            text-decoration: none;
+        }
+        ol.references li a[href^="#backref"]:hover {
+            text-decoration: underline;
+        }
+
+         
+        sup a[href^="#"],         
+        .references a[href^="#"]  
+        {
+             
+            color: #0066cc !important;           
+            text-decoration: underline !important;
+            cursor: pointer !important;
+    
+             
+            pointer-events: auto !important;
+    
+             
+            transition: color 0.2s ease;
+         }
+         sup a[href^="#"]:hover,
+         .references a[href^="#"]:hover {
+             color: #004499 !important;           
+             text-decoration: none !important;    
+         }
+
+          
+         .logo-link {
+             display: flex;
+             align-items: center;
+             gap: 1rem;
+             text-decoration: none;
+             color: inherit;  
+         }
+
+         .logo-link:hover {
+             opacity: 0.9;  
+         }
+
+         .logo-link:hover .logo {
+             transform: scale(1.05);
+             transition: transform 0.2s ease;
+         }
+
+         .logo-link:hover h1 {
+             color: var(--primary);
+             transition: color 0.2s ease;
+         }
     </style>
 </head>
 <body>
     <header>
         <div class="logo-title">
-            <img src="/img/wynertech-logo.svg" alt="WynerTech Solutions Logo" class="logo">
-            <h1>WynerTech Solutions</h1>
+            <a href="https://wynertech.com/" class="logo-link">
+                <img src="/img/wynertech-logo.svg" alt="WynerTech Solutions Logo" class="logo">
+                <h1>WynerTech Solutions</h1>
+            </a>
         </div>
         <nav>
             
@@ -61,11 +188,17 @@
 <li>Timeline expectations</li>
 <li>Team size and current stack</li>
 </ul>
-<p><strong>GitHub</strong>: <a href="https://github.com/WynerTech">github.com/WynerTech</a></p>
+<!-- raw HTML omitted -->
 
     </div>
 </article>
 
     </main>
+    
+    <footer class="site-footer">
+      <div class="container">
+        <p class="copyright">Copyright &copy; 2026 WynerTech Solutions LLC. All rights reserved.</p>
+      </div>
+    </footer>
 </body>
 </html>

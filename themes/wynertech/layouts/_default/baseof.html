@@ -28,13 +28,140 @@
         /* ===== HOMEPAGE STYLES ===== */
         .hero { text-align: center; padding: 4rem 0; }
         .hero h2 { font-size: 2.5rem; margin-bottom: 1rem; }
+        
+        /* ===== TABLE STYLES ===== */
+        article table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 2rem 0;
+            font-size: 0.95em;
+        }
+        article table th {
+            border: 1px solid #4a5568;
+            background-color: #f7fafc;
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+        article table td {
+            border: 1px solid #e2e8f0;
+            padding: 10px 15px;
+        }
+        article table tr:hover {
+            background-color: #f1f5f9;
+        }
+
+        /* Center the entire figure block */
+        .architecture-figure {
+          text-align: center;
+          margin: 2rem auto; /* Adds space above and below */
+          max-width: 1000px; /* Optional: Prevents image from getting too wide */
+        }
+
+        /* Center the image itself */
+        .architecture-figure img {
+          display: block; /* Crucial: Makes margin auto work */
+          margin-left: auto;
+          margin-right: auto;
+          max-width: 100%; /* Ensures it's responsive and doesn't overflow */
+          height: auto;
+          border: 1px solid #e2e8f0; /* Optional: A subtle border */
+          border-radius: 8px;
+        }
+
+        /* Style the caption - text is left-aligned inside the centered container */
+        .architecture-figure figcaption {
+          text-align: left; /* This is the key: left-aligns the text */
+          margin-top: 0.75rem;
+          font-size: 0.95em;
+          color: #666; /* A softer gray for the caption */
+          font-style: italic;
+          line-height: 1.5;
+          max-width: 800px; /* Optional: Controls caption width */
+          margin-left: auto;
+          margin-right: auto; /* This, combined with a width, centers the caption block itself */
+        }
+
+        /* References Section Styling */
+        ol.references {
+            list-style: none;
+            padding-left: 0;
+            counter-reset: ref-counter;
+        }
+        ol.references li {
+            margin-bottom: 1em;
+            padding-left: 3.5em;
+            text-indent: -3.5em;
+            counter-increment: ref-counter;
+            position: relative;
+        }
+        ol.references li::before {
+            content: "[" counter(ref-counter) "] ";
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+        ol.references li a[href^="#backref"] {
+            font-size: 0.85em;
+            margin-left: 0.5em;
+            text-decoration: none;
+        }
+        ol.references li a[href^="#backref"]:hover {
+            text-decoration: underline;
+        }
+
+        /* Style for all citation and return links */
+        sup a[href^="#"],        /* Targets in-text citations like [1] */
+        .references a[href^="#"] /* Targets the '↑' return links */
+        {
+            /* Make it LOOK like a link */
+            color: #0066cc !important;          /* Standard link blue */
+            text-decoration: underline !important;
+            cursor: pointer !important;
+    
+            /* Ensure it's ALWAYS clickable */
+            pointer-events: auto !important;
+    
+            /* Optional: Add hover effect */
+            transition: color 0.2s ease;
+         }
+         sup a[href^="#"]:hover,
+         .references a[href^="#"]:hover {
+             color: #004499 !important;          /* Darker blue on hover */
+             text-decoration: none !important;   /* Optional: remove underline on hover */
+         }
+
+         /* Logo link styling */
+         .logo-link {
+             display: flex;
+             align-items: center;
+             gap: 1rem;
+             text-decoration: none;
+             color: inherit; /* Inherits text color from parent */
+         }
+
+         .logo-link:hover {
+             opacity: 0.9; /* Slight hover effect */
+         }
+
+         .logo-link:hover .logo {
+             transform: scale(1.05);
+             transition: transform 0.2s ease;
+         }
+
+         .logo-link:hover h1 {
+             color: var(--primary);
+             transition: color 0.2s ease;
+         }
     </style>
 </head>
 <body>
     <header>
         <div class="logo-title">
-            <img src="/img/wynertech-logo.svg" alt="WynerTech Solutions Logo" class="logo">
-            <h1>{{ .Site.Title }}</h1>
+            <a href="https://wynertech.com/" class="logo-link">
+                <img src="/img/wynertech-logo.svg" alt="WynerTech Solutions Logo" class="logo">
+                <h1>{{ .Site.Title }}</h1>
+            </a>
         </div>
         <nav>
             {{ range .Site.Menus.main }}
@@ -46,5 +173,11 @@
     <main>
         {{ block "main" . }}{{ end }}
     </main>
+    
+    <footer class="site-footer">
+      <div class="container">
+        <p class="copyright">Copyright &copy; {{ now.Format "2006" }} WynerTech Solutions LLC. All rights reserved.</p>
+      </div>
+    </footer>
 </body>
 </html>

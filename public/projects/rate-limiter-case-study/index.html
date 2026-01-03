@@ -28,13 +28,140 @@
          
         .hero { text-align: center; padding: 4rem 0; }
         .hero h2 { font-size: 2.5rem; margin-bottom: 1rem; }
+        
+         
+        article table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 2rem 0;
+            font-size: 0.95em;
+        }
+        article table th {
+            border: 1px solid #4a5568;
+            background-color: #f7fafc;
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+        article table td {
+            border: 1px solid #e2e8f0;
+            padding: 10px 15px;
+        }
+        article table tr:hover {
+            background-color: #f1f5f9;
+        }
+
+         
+        .architecture-figure {
+          text-align: center;
+          margin: 2rem auto;  
+          max-width: 1000px;  
+        }
+
+         
+        .architecture-figure img {
+          display: block;  
+          margin-left: auto;
+          margin-right: auto;
+          max-width: 100%;  
+          height: auto;
+          border: 1px solid #e2e8f0;  
+          border-radius: 8px;
+        }
+
+         
+        .architecture-figure figcaption {
+          text-align: left;  
+          margin-top: 0.75rem;
+          font-size: 0.95em;
+          color: #666;  
+          font-style: italic;
+          line-height: 1.5;
+          max-width: 800px;  
+          margin-left: auto;
+          margin-right: auto;  
+        }
+
+         
+        ol.references {
+            list-style: none;
+            padding-left: 0;
+            counter-reset: ref-counter;
+        }
+        ol.references li {
+            margin-bottom: 1em;
+            padding-left: 3.5em;
+            text-indent: -3.5em;
+            counter-increment: ref-counter;
+            position: relative;
+        }
+        ol.references li::before {
+            content: "[" counter(ref-counter) "] ";
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+        ol.references li a[href^="#backref"] {
+            font-size: 0.85em;
+            margin-left: 0.5em;
+            text-decoration: none;
+        }
+        ol.references li a[href^="#backref"]:hover {
+            text-decoration: underline;
+        }
+
+         
+        sup a[href^="#"],         
+        .references a[href^="#"]  
+        {
+             
+            color: #0066cc !important;           
+            text-decoration: underline !important;
+            cursor: pointer !important;
+    
+             
+            pointer-events: auto !important;
+    
+             
+            transition: color 0.2s ease;
+         }
+         sup a[href^="#"]:hover,
+         .references a[href^="#"]:hover {
+             color: #004499 !important;           
+             text-decoration: none !important;    
+         }
+
+          
+         .logo-link {
+             display: flex;
+             align-items: center;
+             gap: 1rem;
+             text-decoration: none;
+             color: inherit;  
+         }
+
+         .logo-link:hover {
+             opacity: 0.9;  
+         }
+
+         .logo-link:hover .logo {
+             transform: scale(1.05);
+             transition: transform 0.2s ease;
+         }
+
+         .logo-link:hover h1 {
+             color: var(--primary);
+             transition: color 0.2s ease;
+         }
     </style>
 </head>
 <body>
     <header>
         <div class="logo-title">
-            <img src="/img/wynertech-logo.svg" alt="WynerTech Solutions Logo" class="logo">
-            <h1>WynerTech Solutions</h1>
+            <a href="https://wynertech.com/" class="logo-link">
+                <img src="/img/wynertech-logo.svg" alt="WynerTech Solutions Logo" class="logo">
+                <h1>WynerTech Solutions</h1>
+            </a>
         </div>
         <nav>
             
@@ -52,12 +179,186 @@
 <article class="container">
     <h1>Case Study: Designing a Scalable Distributed Rate Limiter</h1>
     <div class="content">
-        <h2 id="executive-summary">Executive Summary</h2>
-<p>Begin your case study content here&hellip;</p>
+        <blockquote>
+<p><strong>Note from the Founder:</strong> We&rsquo;re publishing the complete analysis to demonstrate our expertise in distributed systems architecture. If you&rsquo;re evaluating system design capabilities for your project, this represents the depth of analysis we bring to every engagement. We&rsquo;re available for consulting on similar architectures: <a href="mailto:contact@wynertech.com">contact@wynertech.com</a></p>
+</blockquote>
+<h2 id="executive-summary">Executive Summary</h2>
+<p>This case study details the architecture and implementation of a production-grade, distributed rate limiting system. We evaluated core algorithms (Token Bucket, Fixed Window, Rolling Window) and implemented a highly available solution using <strong>Redis Sorted Sets</strong> and <strong>Lua scripts</strong> to achieve low-latency, accurate request throttling at scale, preventing API abuse and ensuring fair resource allocation.</p>
+<h2 id="1-core-rate-limiting-algorithms">1. Core Rate Limiting Algorithms</h2>
+<p>We analyzed three fundamental algorithms, each with distinct trade-offs between accuracy, memory use, and burst handling.</p>
+<h3 id="token-bucket">Token Bucket</h3>
+<ul>
+<li><strong>Principle</strong>: A bucket holds tokens (capacity). Requests consume tokens, which refill at a steady rate.</li>
+<li><strong>Use Case</strong>: Ideal for allowing controlled bursts of traffic. Simple and memory-efficient.</li>
+<li><strong>Limitation</strong>: Prone to race conditions under high concurrency.</li>
+</ul>
+<h3 id="fixed-window-counter">Fixed Window Counter</h3>
+<ul>
+<li><strong>Principle</strong>: Counts requests in fixed, consecutive time windows (e.g., per minute).</li>
+<li><strong>Use Case</strong>: Simple to implement.</li>
+<li><strong>Critical Flaw</strong>: Fails at window boundaries, allowing <strong>2x the limit</strong> if requests straddle two windows.</li>
+</ul>
+<h3 id="rolling-window-counter">Rolling Window Counter</h3>
+<ul>
+<li><strong>Principle</strong>: Maintains a precise, moving time window by tracking individual request timestamps [2].</li>
+<li><strong>Use Case</strong>: Accurate enforcement, preventing boundary exploits.</li>
+<li><strong>Cost</strong>: Requires more memory to store timestamps.</li>
+</ul>
+<h3 id="algorithm-comparison">Algorithm Comparison</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Algorithm</th>
+<th style="text-align:left">Accuracy</th>
+<th style="text-align:left">Memory Efficiency</th>
+<th style="text-align:left">Burst Handling</th>
+<th style="text-align:left">Best For</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>Token Bucket</strong></td>
+<td style="text-align:left">Medium</td>
+<td style="text-align:left"><strong>Excellent</strong></td>
+<td style="text-align:left"><strong>Excellent</strong></td>
+<td style="text-align:left">API limits with bursts</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Fixed Window</strong></td>
+<td style="text-align:left">Low</td>
+<td style="text-align:left"><strong>Excellent</strong></td>
+<td style="text-align:left">Poor</td>
+<td style="text-align:left">Simple throttling</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Rolling Window</strong></td>
+<td style="text-align:left"><strong>High</strong></td>
+<td style="text-align:left">Moderate</td>
+<td style="text-align:left">Good</td>
+<td style="text-align:left"><strong>Precise enforcement</strong></td>
+</tr>
+</tbody>
+</table>
+<h2 id="2-chosen-architecture-redis-sorted-sets">2. Chosen Architecture: Redis Sorted Sets</h2>
+<p>We selected the <strong>Rolling Window algorithm</strong> for accuracy, implemented with <strong>Redis Sorted Sets</strong>. This in-memory data store provides the necessary performance and atomic operations.</p>
+<p><strong>Why Redis Sorted Sets?</strong></p>
+<ul>
+<li><strong>Speed</strong>: In-memory storage [9] avoids disk serialization overhead [10][11].</li>
+<li><strong>Atomic Operations</strong>: Commands like <code>ZADD</code> and <code>ZREMRANGEBYSCORE</code> run atomically, preventing race conditions.</li>
+<li><strong>Built-in Data Structure</strong>: Sorted Sets are ideal for storing timestamps sorted by score, enabling efficient window calculations with O(log N) complexity.</li>
+<li><strong>Lua Scripting</strong>: Allows bundling multiple Redis commands into a single, server-side atomic operation.</li>
+</ul>
+<h3 id="system-architecture">System Architecture</h3>
+<figure class="architecture-figure">
+    <img src="architecture.drawio.svg" alt="Rate Limiter Architecture Diagram" loading="lazy">
+    <figcaption>The system uses a load balancer, stateless rate limiter services, and a Redis Cluster for shared state.</figcaption>
+</figure>
+
+<p><strong>Request Flow:</strong></p>
+<ol>
+<li>Client request arrives at the Load Balancer.</li>
+<li>Request is forwarded to a Rate Limiter service.</li>
+<li>The service executes a Lua script on Redis that <strong>atomically</strong>:
+<ul>
+<li>Removes old timestamps outside the window (<code>ZREMRANGEBYSCORE</code>).</li>
+<li>Counts remaining requests (<code>ZCARD</code>).</li>
+<li>If under the limit, adds the new request timestamp (<code>ZADD</code>) and sets a key expiry (<code>EXPIRE</code>).</li>
+</ul>
+</li>
+<li>Based on the result, the request is either allowed to proceed to the backend API or rejected with a <code>429 Too Many Requests</code> status.</li>
+</ol>
+<h2 id="3-solving-distributed-challenges">3. Solving Distributed Challenges</h2>
+<h3 id="race-condition-prevention">Race Condition Prevention</h3>
+<p>Concurrent requests can cause a <strong>read-modify-write race condition</strong>, leading to undercounting. We eliminate this by executing the entire check-and-update logic (cleanup, count, add) within a <strong>single Lua script</strong>, guaranteeing atomicity on the Redis server.</p>
+<h3 id="concurrent-request-limiting">Concurrent Request Limiting</h3>
+<p>For limiting simultaneous operations (e.g., concurrent uploads), we extend the pattern using a unique <code>request_id</code> as the Sorted Set member. This allows us to track and remove specific requests upon completion, accurately enforcing concurrency limits.</p>
+<h3 id="scaling-with-redis-cluster">Scaling with Redis Cluster</h3>
+<p>For high availability and scalability, we use <strong>Redis Cluster</strong>:</p>
+<ul>
+<li><strong>Data Sharding</strong>: Automatically partitions data across multiple nodes [3][4][7].</li>
+<li><strong>High Availability</strong>: Each shard has a leader and replicas; failures trigger automatic failover [5][8].</li>
+<li><strong>Consistency Note</strong>: The system favors availability and partition tolerance (AP from CAP), meaning reads post-write may briefly see stale data during a failover—an acceptable trade-off for rate limiting.</li>
+</ul>
+<h2 id="4-performance--design-considerations">4. Performance &amp; Design Considerations</h2>
+<p>The architecture is designed to meet the core requirements for a high-scale rate limiter: low latency, high accuracy, and high availability. The following table summarizes the <strong>design targets and theoretical advantages</strong> of our chosen approach:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Design Goal</th>
+<th style="text-align:left">How Our Architecture Achieves It</th>
+<th style="text-align:left">Basis in Analysis</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>Low Latency</strong></td>
+<td style="text-align:left">In-memory Redis operations &amp; atomic Lua scripts minimize round trips.</td>
+<td style="text-align:left">Analysis states in-memory stores &ldquo;avoid the overhead of encoding for disk&rdquo; and Lua scripts provide &ldquo;atomic operations with minimal latency&rdquo; [1][13].</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>High Accuracy</strong></td>
+<td style="text-align:left">Rolling window algorithm with Redis Sorted Sets prevents boundary bursts that affect fixed windows.</td>
+<td style="text-align:left">Comparative analysis shows rolling windows provide &ldquo;High&rdquo; accuracy versus &ldquo;Low&rdquo; for fixed windows.</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Memory Efficiency</strong></td>
+<td style="text-align:left">Automatic cleanup via <code>ZREMRANGEBYSCORE</code> and <code>EXPIRE</code> prevents leaks. Per-user memory is predictable.</td>
+<td style="text-align:left">Algorithm analysis includes memory estimates (e.g., ~16 bytes/user for Token Bucket, ~8L bytes/user Rolling Windows with Redis sorted sets, where L is the request limit).</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Concurrency Safety</strong></td>
+<td style="text-align:left">Atomic Lua scripts encapsulate the read-cleanup-add cycle.</td>
+<td style="text-align:left">Section on race conditions concludes Lua scripts are executed atomically on the server [6], preventing lost updates.</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>High Availability &amp; Scalability</strong></td>
+<td style="text-align:left">Redis Cluster with leader-replica replication [12] and automatic failover.</td>
+<td style="text-align:left">Design states cluster provides &ldquo;horizontal scaling and improving performance&rdquo; and &ldquo;maintain availability&rdquo; during node failure.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Key Trade-off Acknowledged (CAP Theorem):</strong>
+The use of an asynchronously replicated Redis Cluster favors <strong>Availability and Partition Tolerance (AP)</strong>. This means the system maintains operation during node failures, but clients may briefly encounter stale data or acknowledged writes may be lost during a leader failover—an accepted trade-off for a rate limiter where momentary, slight inaccuracy is preferable to being completely unavailable.</p>
+<h2 id="5-key-takeaways">5. Key Takeaways</h2>
+<blockquote>
+<p><strong>❗ Foundational Trade-off: Embrace AP from CAP</strong>
+In a distributed rate limiter, favor <strong>Availability and Partition Tolerance (AP)</strong>. Using an asynchronously replicated Redis Cluster means the system stays up during failures, but clients may briefly see stale data or lose acknowledged writes during a leader failover. This is the correct trade-off: a slightly inaccurate rate limiter is better than one that blocks all traffic.</p>
+</blockquote>
+<p>Beyond this core principle, here are the critical lessons from this design:</p>
+<ol>
+<li><strong>Algorithm Choice Dictates Behavior</strong>: Use <strong>Token Bucket</strong> for predictable bursts, <strong>Rolling Window</strong> for precise enforcement, and <strong>Concurrent Limiters</strong> for protecting finite resources (e.g., database connections). There is no one-size-fits-all solution.</li>
+<li><strong>Atomicity is Non-Negotiable for Correctness</strong>: In a distributed system, race conditions are a guarantee, not a possibility. <strong>Lua scripts</strong> (or equivalent atomic transactions) are essential for bundling the read-cleanup-write cycle into a single, thread-safe operation.</li>
+<li><strong>Leverage Purpose-Built Data Structures</strong>: <strong>Redis Sorted Sets</strong> are not just a cache; they are a specialized data structure that provides O(log N) sorting and range operations, which are perfectly suited for efficient timestamp window calculations.</li>
+<li><strong>Design for the Distribution, Not the Single Node</strong>: Assume multiple rate limiter instances from the start. A <strong>shared data store (Redis Cluster)</strong> is required for consistent state, and the architecture must remain stateless to enable horizontal scaling.</li>
+<li><strong>Memory is a Scalability Dimension</strong>: The rolling window algorithm trades memory (storing timestamps) for accuracy. Model your memory needs (e.g., <code>8 bytes * limit_per_user * total_users</code>) to ensure the system scales predictably.</li>
+<li><strong>Observability is Part of the Design</strong>: The system must expose metrics (throttle rates, Redis latency, memory usage) to validate performance, tune limits, and detect abuse patterns or infrastructure degradation.</li>
+</ol>
+<h2 id="references">References</h2>
+<p>[1] <strong>Tarjan, P. (2017).</strong> <em>Scaling your API with rate limiters</em> [Gist]. Retrieved November 4, 2025, from <a href="https://gist.github.com/ptarjan/e38f45f2dfe601419ca3af937fff574d#request-rate-limiter">https://gist.github.com/ptarjan/e38f45f2dfe601419ca3af937fff574d#request-rate-limiter</a></p>
+<p>[2] <strong>Hayes, P. (2015, February 6).</strong> <em>Better Rate Limiting With Redis Sorted Sets</em>. ClassDojo Engineering Blog. Retrieved November 4, 2025, from <a href="https://engineering.classdojo.com/blog/2015/02/06/rolling-rate-limiter/">https://engineering.classdojo.com/blog/2015/02/06/rolling-rate-limiter/</a></p>
+<p>[3] <strong>Redis. (n.d.).</strong> <em>Scale with Redis Cluster</em>. Redis Documentation. Retrieved November 10, 2025, from <a href="https://redis.io/docs/latest/operate/oss_and_stack/management/scaling/">https://redis.io/docs/latest/operate/oss_and_stack/management/scaling/</a></p>
+<p>[4] <strong>Redis. (n.d.).</strong> <em>Redis cluster specification</em>. Redis Documentation. Retrieved November 17, 2025, from <a href="https://redis.io/docs/latest/operate/oss_and_stack/reference/cluster-spec/">https://redis.io/docs/latest/operate/oss_and_stack/reference/cluster-spec/</a></p>
+<p>[5] <strong>Redis. (n.d.).</strong> <em>High availability with Redis Sentinel</em>. Redis Documentation. Retrieved November 17, 2025, from <a href="https://redis.io/docs/latest/operate/oss_and_stack/management/sentinel/">https://redis.io/docs/latest/operate/oss_and_stack/management/sentinel/</a></p>
+<p>[6] <strong>Redis. (n.d.).</strong> <em>Atomicity with Lua</em>. Redis Learn. Retrieved November 26, 2025, from <a href="https://redis.io/learn/develop/java/spring/rate-limiting/fixed-window/reactive-lua">https://redis.io/learn/develop/java/spring/rate-limiting/fixed-window/reactive-lua</a></p>
+<p>[7] <strong>Namuag, P. (2021, July 1).</strong> <em>Hash Slot vs. Consistent Hashing in Redis</em>. Severalnines Blog. Retrieved November 17, 2025, from <a href="https://severalnines.com/blog/hash-slot-vs-consistent-hashing-redis/">https://severalnines.com/blog/hash-slot-vs-consistent-hashing-redis/</a></p>
+<p>[8] <strong>Kong, C. (2023, June 12).</strong> <em>Redis Sentinel vs Redis Cluster: A Comparative Overview</em>. Medium. Retrieved November 10, 2025, from <a href="https://medium.com/@chaewonkong/redis-sentinel-vs-redis-cluster-a-comparative-overview-8c2561d3168f">https://medium.com/@chaewonkong/redis-sentinel-vs-redis-cluster-a-comparative-overview-8c2561d3168f</a></p>
+<p>[9] <strong>IBM. (n.d.).</strong> <em>What is Redis?</em>. IBM Think Topics. Retrieved November 11, 2025, from <a href="https://www.ibm.com/think/topics/redis">https://www.ibm.com/think/topics/redis</a></p>
+<p>[10] <strong>Kleppmann, M. (2017).</strong> <em>Designing Data-Intensive Applications: The Big Ideas Behind Reliable, Scalable, and Maintainable Systems</em>. O&rsquo;Reilly Media, Inc.</p>
+<p>[11] <strong>Harizopoulos, S., Abadi, D. J., Madden, S., &amp; Stonebraker, M. (2018).</strong> OLTP through the looking glass, and what we found there. In <em>Making Databases Work: The Pragmatic Wisdom of Michael Stonebraker</em> (pp. 409–439).</p>
+<p>[12] <strong>Riak. (n.d.).</strong> <em>Distributed Data Types – Riak 2.0</em>. Riak Documentation. Retrieved December 1, 2025, from <a href="https://riak.com/distributed-data-types-riak-2-0/">https://riak.com/distributed-data-types-riak-2-0/</a></p>
+<p>[13] <strong>Redis. (n.d.).</strong> <em>EVAL</em>. Redis Commands. Retrieved December 2, 2025, from <a href="https://redis.io/docs/latest/commands/eval/">https://redis.io/docs/latest/commands/eval/</a></p>
+<hr>
+<p><em>For access to the extended version of this case study with additional implementation details, code examples, and performance benchmarks, please contact us via email: <a href="mailto:contact@wynertech.com">contact@wynertech.com</a> Kindly specify your purpose for the request (e.g., industrial development, educational use, or interview preparation).</em></p>
 
     </div>
 </article>
 
     </main>
+    
+    <footer class="site-footer">
+      <div class="container">
+        <p class="copyright">Copyright &copy; 2026 WynerTech Solutions LLC. All rights reserved.</p>
+      </div>
+    </footer>
 </body>
 </html>

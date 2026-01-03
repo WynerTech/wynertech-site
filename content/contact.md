@@ -15,4 +15,4 @@ draft: false
 - Timeline expectations
 - Team size and current stack
 
-**GitHub**: [github.com/WynerTech](https://github.com/WynerTech)
+<!-- **GitHub**: [github.com/WynerTech](https://github.com/WynerTech) -->

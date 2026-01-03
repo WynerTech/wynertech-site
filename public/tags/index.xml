@@ -6,6 +6,42 @@
     <description>Recent content in Tags on WynerTech Solutions</description>
     <generator>Hugo</generator>
     <language>en-us</language>
+    <lastBuildDate>Sun, 14 Dec 2025 02:28:31 -0500</lastBuildDate>
     <atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Algorithms</title>
+      <link>http://localhost:1313/tags/algorithms/</link>
+      <pubDate>Sun, 14 Dec 2025 02:28:31 -0500</pubDate>
+      <guid>http://localhost:1313/tags/algorithms/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Distributed Systems</title>
+      <link>http://localhost:1313/tags/distributed-systems/</link>
+      <pubDate>Sun, 14 Dec 2025 02:28:31 -0500</pubDate>
+      <guid>http://localhost:1313/tags/distributed-systems/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Rate Limiting</title>
+      <link>http://localhost:1313/tags/rate-limiting/</link>
+      <pubDate>Sun, 14 Dec 2025 02:28:31 -0500</pubDate>
+      <guid>http://localhost:1313/tags/rate-limiting/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Redis</title>
+      <link>http://localhost:1313/tags/redis/</link>
+      <pubDate>Sun, 14 Dec 2025 02:28:31 -0500</pubDate>
+      <guid>http://localhost:1313/tags/redis/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Scalability</title>
+      <link>http://localhost:1313/tags/scalability/</link>
+      <pubDate>Sun, 14 Dec 2025 02:28:31 -0500</pubDate>
+      <guid>http://localhost:1313/tags/scalability/</guid>
+      <description></description>
+    </item>
   </channel>
 </rss>
