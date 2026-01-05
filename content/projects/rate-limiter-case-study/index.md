@@ -8,7 +8,7 @@ tags: ["Redis", "Rate Limiting", "Distributed Systems", "Scalability", "Algorith
 author: "Bo Guan"
 ---
 
-> **Note from the Founder:** We're publishing the complete analysis to demonstrate our expertise in distributed systems architecture. If you're evaluating system design capabilities for your project, this represents the depth of analysis we bring to every engagement. We're available for consulting on similar architectures: [contact@wynertech.com](mailto:contact@wynertech.com)
+> **Note from the Founder:** We're publishing the complete analysis to demonstrate our expertise in distributed systems architecture. If you're evaluating system design capabilities for your project, this represents the depth of analysis we bring to every engagement. We're available for consulting on distributed systems, API design, and scalable architecture: [contact@wynertech.com](mailto:contact@wynertech.com)
 
 ## Executive Summary
 This case study details the architecture and implementation of a production-grade, distributed rate limiting system. We evaluated core algorithms (Token Bucket, Fixed Window, Rolling Window) and implemented a highly available solution using **Redis Sorted Sets** and **Lua scripts** to achieve low-latency, accurate request throttling at scale, preventing API abuse and ensuring fair resource allocation.
