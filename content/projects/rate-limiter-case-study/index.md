@@ -1,5 +1,5 @@
 ---
-title: "Case Study: Designing a Scalable Distributed Rate Limiter"
+title: "Designing a Scalable Distributed Rate Limiter"
 date: 2025-12-14T02:28:31-05:00
 summary: "How we architected a high-performance rate limiting system using Redis Sorted Sets."
 draft: false
@@ -8,7 +8,7 @@ tags: ["Redis", "Rate Limiting", "Distributed Systems", "Scalability", "Algorith
 author: "Bo Guan"
 ---
 
-> **Note from the Founder:** We're publishing the complete analysis to demonstrate our expertise in distributed systems architecture. If you're evaluating system design capabilities for your project, this represents the depth of analysis we bring to every engagement. We're available for consulting on distributed systems, API design, and scalable architecture: [contact@wynertech.com](mailto:contact@wynertech.com)
+> **Note from the Systems Architect:** *For access to the extended version of this case study with additional implementation details, code examples, and performance benchmarks, please contact us via email: [contact@wynertech.com](mailto:contact@wynertech.com) Kindly specify your purpose for the request (e.g., industrial development, educational use, or interview preparation).*
 
 ## Executive Summary
 This case study details the architecture and implementation of a production-grade, distributed rate limiting system. We evaluated core algorithms (Token Bucket, Fixed Window, Rolling Window) and implemented a highly available solution using **Redis Sorted Sets** and **Lua scripts** to achieve low-latency, accurate request throttling at scale, preventing API abuse and ensuring fair resource allocation.
@@ -136,4 +136,4 @@ Beyond this core principle, here are the critical lessons from this design:
 
 ---
 
-*For access to the extended version of this case study with additional implementation details, code examples, and performance benchmarks, please contact us via email: [contact@wynertech.com](mailto:contact@wynertech.com) Kindly specify your purpose for the request (e.g., industrial development, educational use, or interview preparation).*
+**Note from the Founder:** *We're publishing the complete analysis to demonstrate our expertise in distributed systems architecture. If you're evaluating system design capabilities for your project, this represents the depth of analysis we bring to every engagement. We're available for consulting on distributed systems, API design, and scalable architecture: [contact@wynertech.com](mailto:contact@wynertech.com)*
