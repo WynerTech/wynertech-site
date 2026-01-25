@@ -16,7 +16,7 @@ Rate limiting is an essential control mechanism in distributed systems, balancin
 
 ## 1. Core Rate Limiting Algorithms
 
-Rate limiters regulate how many requests a user, service, or IP address can make within a specific timeframe. However, they're not universally applicable—they work best when users can adjust their request pace without affecting outcomes (e.g., APIs with retry logic). For real-time events where pacing is impossible, alternative strategies like capacity scaling or specialized queuing are required.
+Rate limiters regulate how many requests a user, service, or IP address can make within a specific timeframe. However, they're not universally applicable—they work best when users can adjust their request pace without affecting outcomes (e.g., APIs with retry logic). For real-time events where pacing is impossible, alternative strategies like capacity scaling or specialized queuing are required [14].
 
 We analyzed three fundamental algorithms, each with distinct trade-offs between accuracy, memory efficiency, and burst handling.
 
@@ -91,7 +91,7 @@ We selected the **Rolling Window algorithm** for accuracy, implemented with **Re
 Concurrent requests can cause a **read-modify-write race condition**, leading to undercounting. We eliminate this by executing the entire check-and-update logic (cleanup, count, add) within a **single Lua script**, guaranteeing atomicity on the Redis server [6][13].
 
 ### Concurrent Request Limiting
-For limiting simultaneous operations (e.g., concurrent uploads), we extend the pattern using a unique `request_id` as the Sorted Set member. This allows us to track and remove specific requests upon completion, accurately enforcing concurrency limits, similar to distributed data types that merge commutative operations [12].
+For limiting simultaneous operations (e.g., concurrent uploads), we extend the pattern using a unique `request_id` as the Sorted Set member. This allows us to track and remove specific requests upon completion, accurately enforcing concurrency limits, similar to distributed data types that merge commutative operations in the replicated context [12].
 
 ### Scaling with Redis Cluster
 For high availability and scalability, we use **Redis Cluster**:
@@ -117,7 +117,7 @@ The use of an asynchronously replicated Redis Cluster favors **Availability and 
 ## 5. Key Takeaways
 
 > **❗ Foundational Trade-off: Embrace AP from CAP**
-> In a distributed rate limiter, favor **Availability and Partition Tolerance (AP)**. Using an asynchronously replicated Redis Cluster means the system stays up during failures, but clients may briefly see stale data or lose acknowledged writes during a leader failover. This is the correct trade-off: a slightly inaccurate rate limiter is better than one that blocks all traffic.
+> In a distributed rate limiter, favor **Availability and Partition Tolerance (AP)**. Using an asynchronously replicated Redis Cluster means the system stays up during failures, but clients may briefly see stale data or lose acknowledged writes during a network partition or a leader failover. This is the correct trade-off: a slightly inaccurate rate limiter is better than one that blocks all traffic.
 
 Beyond this core principle, here are the critical lessons from this design:
 
